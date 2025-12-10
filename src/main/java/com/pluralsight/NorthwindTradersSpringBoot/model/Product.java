@@ -47,11 +47,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product {\n" +
-                "  productId=" + productId + ",\n" +
-                "  productName='" + productName + "',\n" +
-                "  categoryId=" + categoryId + ",\n" +
-                "  unitPrice=" + unitPrice + "\n" +
-                "}";
+        return String.format("%-10d | %-30s | %-10d | $%-10.2f",
+                productId, productName, categoryId, unitPrice);
     }
 }

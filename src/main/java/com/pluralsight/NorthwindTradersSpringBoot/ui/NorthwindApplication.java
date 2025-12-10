@@ -1,10 +1,12 @@
 package com.pluralsight.NorthwindTradersSpringBoot.ui;
 
 import com.pluralsight.NorthwindTradersSpringBoot.data.ProductDao;
+import com.pluralsight.NorthwindTradersSpringBoot.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -60,21 +62,69 @@ public class NorthwindApplication implements CommandLineRunner {
     }
 
     private void listProducts() {
+        List<Product> products = productDao.getAll();
+        products.forEach(System.out::println);
     }
 
     private void addProduct(Scanner scanner) {
         System.out.print("ProductID: ");
         int id = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Product Name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Category ID: ");
+        int categoryId = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Unit Price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+
+        productDao.add(new Product(id,name,categoryId,price));
+
+        System.out.println("Product added!");
     }
 
     private void updateProduct(Scanner scanner) {
-        System.out.println();
+        System.out.println("Enter Product ID to update: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("New Product Name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("New Category ID: ");
+        int categoryId = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("New Unit Price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+
+        productDao.update(new Product(id,name,categoryId,price));
+
+        System.out.println("Product updated!");
     }
 
     private void deleteProduct(Scanner scanner) {
+        System.out.println("Enter Product ID to Delete: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        productDao.delete(id);
+
+        System.out.println("Product deleted!");
     }
 
     private void searchByProduct(Scanner scanner) {
+        System.out.println("Enter a Keyword: ");
+        String keyword = scanner.nextLine();
+
+        List<Product> results = productDao.searchByName(keyword);
+
+        if(results.isEmpty()) {
+            System.out.println("Product not found!");
+        }
+        else {
+            results.forEach(System.out::println);
+        }
+
+
     }
 
 
