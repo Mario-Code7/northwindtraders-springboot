@@ -3,10 +3,7 @@ import com.pluralsight.NorthwindTradersSpringBoot.model.Product;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +47,11 @@ public class JdbcProductDao implements ProductDao{
     @Override
     public void add(Product product) {
             String query =  """
-            INSERT INTO ProductID, ProductName, SupplierID, CategoryID, UnitPrice
+            INSERT INTO ProductID (ProductName, SupplierID, CategoryID, UnitPrice)
             VALUES (?, ?, ?, ?)
             """;
             try(Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+                PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 statement.setInt(1, product.getProductId());
                 statement.setString(2, product.getProductName());
